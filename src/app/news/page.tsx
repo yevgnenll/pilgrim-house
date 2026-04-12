@@ -25,6 +25,8 @@ export default async function NewsPage() {
                 src={post.coverUrl}
                 alt={post.title}
                 className="w-36 h-28 object-cover flex-shrink-0"
+                loading="lazy"
+                decoding="async"
               />
             )}
             <div className="p-5 flex flex-col justify-center">

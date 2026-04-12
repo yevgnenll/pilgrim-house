@@ -64,6 +64,8 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
                 src={item.photoUrl}
                 alt={item.title}
                 className="w-full h-48 object-cover"
+                loading="lazy"
+                decoding="async"
               />
             ) : (
               <div className="w-full h-48 bg-stone-100 flex items-center justify-center text-stone-400 text-sm">
