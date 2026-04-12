@@ -16,8 +16,8 @@ export default async function HomePage() {
     <div className="space-y-16">
       {/* 히어로 */}
       <section className="text-center space-y-4 py-10">
-        <p className="text-amber-700 font-medium tracking-widest text-sm uppercase">Cambodia · Sihanoukville</p>
-        <h1 className="text-4xl font-bold text-stone-800">Pilgrim House<br />Bible School</h1>
+        <p className="text-amber-700 font-medium tracking-widest text-sm uppercase">Pilgrim House · Sihanoukville, Cambodia</p>
+        <h1 className="text-4xl font-bold text-stone-800">B&W Mission Center</h1>
         <p className="text-stone-600 max-w-md mx-auto leading-relaxed">
           캄보디아 시한욱빌에서 하나님의 말씀을 가르치고,<br />
           생명의 복음을 전하는 사역에 함께해 주세요.

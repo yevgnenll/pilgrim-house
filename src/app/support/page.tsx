@@ -21,22 +21,16 @@ export default function SupportPage() {
           </ul>
         </div>
 
-        {/* 후원 계좌 — 실제 정보로 교체 필요 */}
+        {/* 카카오페이 QR */}
         <div className="bg-white border border-stone-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-stone-800 mb-4">후원 계좌</h2>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center py-3 border-b border-stone-100">
-              <span className="text-stone-500">은행</span>
-              <span className="font-medium">— (추후 기입)</span>
-            </div>
-            <div className="flex justify-between items-center py-3 border-b border-stone-100">
-              <span className="text-stone-500">계좌번호</span>
-              <span className="font-medium">— (추후 기입)</span>
-            </div>
-            <div className="flex justify-between items-center py-3">
-              <span className="text-stone-500">예금주</span>
-              <span className="font-medium">김순아</span>
-            </div>
+          <h2 className="text-lg font-semibold text-stone-800 mb-4">카카오페이 송금</h2>
+          <div className="flex flex-col items-center gap-3">
+            <img
+              src="/kakaopay-qr.png"
+              alt="카카오페이 송금 QR 코드"
+              className="w-56 h-56 object-contain"
+            />
+            <p className="text-sm text-stone-500">QR 코드를 스캔하여 카카오페이로 송금해 주세요.</p>
           </div>
         </div>
 
