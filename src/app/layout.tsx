@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'B&W Mission Center',
   description: '캄보디아 시한욱빌 김순아 선교사 — 선교 소식, 기도제목, 사진을 나눕니다.',
+  verification: {
+    google: '-ANnVNu6CrWqPdC80Tqn5Mjc3tuBSV59TJzZ--BE8GU',
+  },
   openGraph: {
     title: 'B&W Mission Center',
     description: '캄보디아 시한욱빌 선교 사역',
