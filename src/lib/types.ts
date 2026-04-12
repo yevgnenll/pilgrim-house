@@ -6,7 +6,7 @@ export interface PrayerRequest {
   content: string
   date: string
   status: '기도중' | '응답됨'
-  category: '김순아 선교사' | '한주연 이사' | ''
+  category: '김순아 선교사' | '한주연 이사(단기선교 2026-04-20 ~ 2026-05-18)' | ''
   published: boolean
 }
 

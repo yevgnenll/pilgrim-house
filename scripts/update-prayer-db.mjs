@@ -23,14 +23,14 @@ async function main() {
       Category: {
         select: {
           options: [
-            { name: '선교사', color: 'blue' },
-            { name: '이사',   color: 'green' },
+            { name: '김순아 선교사', color: 'blue' },
+            { name: '한주연 이사(단기선교 2026-04-20 ~ 2026-05-18)', color: 'green' },
           ],
         },
       },
     },
   })
-  console.log('✅ Category 필드 추가 완료 (선교사 / 이사)')
+  console.log('✅ Category 옵션 업데이트 완료')
 }
 
 main().catch(console.error)

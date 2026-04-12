@@ -6,7 +6,7 @@ import type { PrayerRequest } from '@/lib/types'
 const TABS = [
   { key: '', label: '전체' },
   { key: '김순아 선교사', label: '김순아 선교사' },
-  { key: '한주연 이사', label: '한주연 이사' },
+  { key: '한주연 이사(단기선교 2026-04-20 ~ 2026-05-18)', label: '한주연 이사(단기선교 2026-04-20 ~ 2026-05-18)' },
 ] as const
 
 function PrayerCard({ prayer }: { prayer: PrayerRequest }) {
@@ -38,7 +38,7 @@ function PrayerCard({ prayer }: { prayer: PrayerRequest }) {
 }
 
 export default function PrayerList({ prayers }: { prayers: PrayerRequest[] }) {
-  const [activeTab, setActiveTab] = useState<'' | '김순아 선교사' | '한주연 이사'>('')
+  const [activeTab, setActiveTab] = useState<'' | '김순아 선교사' | '한주연 이사(단기선교 2026-04-20 ~ 2026-05-18)'>('')
 
   const filtered = activeTab === ''
     ? prayers
