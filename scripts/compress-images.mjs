@@ -38,7 +38,7 @@ async function compress(filePath) {
   const ext = path.extname(filePath).toLowerCase()
   const beforeSize = fs.statSync(filePath).size
 
-  const image = sharp(filePath).resize({ width: MAX_WIDTH, withoutEnlargement: true })
+  const image = sharp(filePath).rotate().resize({ width: MAX_WIDTH, withoutEnlargement: true })
 
   let buffer
   if (ext === '.png') {
