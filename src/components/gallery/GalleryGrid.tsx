@@ -6,6 +6,8 @@ import type { GalleryItem } from '@/lib/types'
 export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const touchStartX = useRef<number | null>(null)
+  const thumbnailStripRef = useRef<HTMLDivElement>(null)
+  const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([])
 
   const open = (index: number) => setLightboxIndex(index)
   const close = () => setLightboxIndex(null)
@@ -17,6 +19,18 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
   const next = useCallback(() => {
     setLightboxIndex((i) => (i !== null ? (i + 1) % items.length : null))
   }, [items.length])
+
+  // 활성 썸네일을 가운데로 스크롤
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    const strip = thumbnailStripRef.current
+    const thumb = thumbnailRefs.current[lightboxIndex]
+    if (!strip || !thumb) return
+
+    const stripCenter = strip.offsetWidth / 2
+    const thumbCenter = thumb.offsetLeft + thumb.offsetWidth / 2
+    strip.scrollTo({ left: thumbCenter - stripCenter, behavior: 'smooth' })
+  }, [lightboxIndex])
 
   // 키보드 네비게이션
   useEffect(() => {
@@ -101,12 +115,7 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
           {/* 상단 바 */}
           <div className="flex items-center justify-between px-4 py-3 text-white/70 text-sm flex-shrink-0">
             <span>{lightboxIndex + 1} / {items.length}</span>
-            <button
-              onClick={close}
-              className="text-white text-2xl leading-none px-2"
-            >
-              ✕
-            </button>
+            <button onClick={close} className="text-white text-2xl leading-none px-2">✕</button>
           </div>
 
           {/* 이미지 영역 */}
@@ -114,10 +123,9 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
             className="flex-1 flex items-center justify-center relative px-12 min-h-0"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* 이전 버튼 */}
             <button
               onClick={prev}
-              className="absolute left-2 text-white text-3xl px-2 py-4 hover:text-amber-400 transition-colors"
+              className="absolute left-2 text-white text-4xl px-2 py-4 hover:text-amber-400 transition-colors"
             >
               ‹
             </button>
@@ -128,33 +136,35 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
               className="max-h-full max-w-full object-contain rounded-lg select-none"
             />
 
-            {/* 다음 버튼 */}
             <button
               onClick={next}
-              className="absolute right-2 text-white text-3xl px-2 py-4 hover:text-amber-400 transition-colors"
+              className="absolute right-2 text-white text-4xl px-2 py-4 hover:text-amber-400 transition-colors"
             >
               ›
             </button>
           </div>
 
-          {/* 하단 정보 + 썸네일 스크롤 */}
+          {/* 하단 제목 + 썸네일 */}
           <div
             className="flex-shrink-0 pb-4"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* 제목 */}
             <p className="text-white text-center text-sm px-4 py-2">{current.title}</p>
 
-            {/* 썸네일 가로 스크롤 */}
-            <div className="flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide">
+            {/* 썸네일 스트립 — 활성 항목이 항상 가운데로 스크롤 */}
+            <div
+              ref={thumbnailStripRef}
+              className="flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide justify-start md:justify-center"
+            >
               {items.map((item, index) => (
                 <button
                   key={item.id}
+                  ref={(el) => { thumbnailRefs.current[index] = el }}
                   onClick={() => setLightboxIndex(index)}
                   className={`flex-shrink-0 w-14 h-14 rounded-md overflow-hidden border-2 transition-all ${
                     index === lightboxIndex
-                      ? 'border-amber-400 opacity-100'
-                      : 'border-transparent opacity-50 hover:opacity-80'
+                      ? 'border-amber-400 opacity-100 scale-110'
+                      : 'border-transparent opacity-40 hover:opacity-70'
                   }`}
                 >
                   <img
