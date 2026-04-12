@@ -9,9 +9,6 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'B&W Mission Center',
   description: '캄보디아 시한욱빌 김순아 선교사 — 선교 소식, 기도제목, 사진을 나눕니다.',
-  verification: {
-    google: '-ANnVNu6CrWqPdC80Tqn5Mjc3tuBSV59TJzZ--BE8GU',
-  },
   openGraph: {
     title: 'B&W Mission Center',
     description: '캄보디아 시한욱빌 선교 사역',
@@ -24,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko">
       <head>
+        <meta name="google-site-verification" content="-ANnVNu6CrWqPdC80Tqn5Mjc3tuBSV59TJzZ--BE8GU" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-7W0LWQV2G5" />
         <script
           dangerouslySetInnerHTML={{
