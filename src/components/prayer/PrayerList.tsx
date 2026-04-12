@@ -38,7 +38,7 @@ function PrayerCard({ prayer }: { prayer: PrayerRequest }) {
 }
 
 export default function PrayerList({ prayers }: { prayers: PrayerRequest[] }) {
-  const [activeTab, setActiveTab] = useState<'' | '선교사' | '이사'>('')
+  const [activeTab, setActiveTab] = useState<'' | '김순아 선교사' | '한주연 이사'>('')
 
   const filtered = activeTab === ''
     ? prayers
