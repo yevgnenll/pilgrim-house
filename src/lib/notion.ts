@@ -47,6 +47,7 @@ export async function getPrayerRequests(): Promise<PrayerRequest[]> {
     content: richTextToString(page.properties.Content?.rich_text ?? []),
     date: formatDate(page.properties.Date?.date?.start ?? null),
     status: page.properties.Status?.select?.name ?? '기도중',
+    category: page.properties.Category?.select?.name ?? '',
     published: page.properties.Published?.checkbox ?? false,
   }))
 }
