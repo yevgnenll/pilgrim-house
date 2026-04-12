@@ -4,8 +4,12 @@ import type { NotionBlock } from '@/lib/types'
 
 // 빌드 시 모든 slug에 대해 정적 페이지 생성
 export async function generateStaticParams() {
-  const slugs = await getAllNewsSlugs()
-  return slugs.map((slug) => ({ slug }))
+  try {
+    const slugs = await getAllNewsSlugs()
+    return slugs.map((slug) => ({ slug }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {

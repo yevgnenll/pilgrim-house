@@ -32,6 +32,20 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+      - name: Check secrets
+        run: |
+          echo "=== Notion Secret 확인 ==="
+          echo "NOTION_TOKEN 길이: ${#NOTION_TOKEN}"
+          echo "NOTION_TOKEN 앞 10자: ${NOTION_TOKEN:0:10}..."
+          echo "NOTION_PRAYER_DB_ID: '$NOTION_PRAYER_DB_ID' (길이: ${#NOTION_PRAYER_DB_ID})"
+          echo "NOTION_GALLERY_DB_ID: '$NOTION_GALLERY_DB_ID' (길이: ${#NOTION_GALLERY_DB_ID})"
+          echo "NOTION_NEWS_DB_ID: '$NOTION_NEWS_DB_ID' (길이: ${#NOTION_NEWS_DB_ID})"
+          echo "=========================="
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_PRAYER_DB_ID: ${{ secrets.NOTION_PRAYER_DB_ID }}
+          NOTION_GALLERY_DB_ID: ${{ secrets.NOTION_GALLERY_DB_ID }}
+          NOTION_NEWS_DB_ID: ${{ secrets.NOTION_NEWS_DB_ID }}
 
       - name: Build
         run: npm run build

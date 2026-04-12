@@ -3,7 +3,7 @@ import { getGalleryItems } from '@/lib/notion'
 export const metadata = { title: '사진 | Pilgrim House' }
 
 export default async function GalleryPage() {
-  const items = await getGalleryItems()
+  const items = await getGalleryItems().catch(() => [])
 
   return (
     <div>

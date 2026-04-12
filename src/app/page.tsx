@@ -5,8 +5,8 @@ import { getNewsPosts } from '@/lib/notion'
 export default async function HomePage() {
   // 최근 기도제목 2개, 최근 소식 3개 미리보기
   const [prayers, newsPosts] = await Promise.all([
-    getPrayerRequests(),
-    getNewsPosts(),
+    getPrayerRequests().catch(() => []),
+    getNewsPosts().catch(() => []),
   ])
 
   const recentPrayers = prayers.slice(0, 2)

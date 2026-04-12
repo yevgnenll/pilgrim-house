@@ -6,9 +6,9 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 })
 
-const PRAYER_DB_ID = process.env.NOTION_PRAYER_DB_ID!
-const GALLERY_DB_ID = process.env.NOTION_GALLERY_DB_ID!
-const NEWS_DB_ID = process.env.NOTION_NEWS_DB_ID!
+const PRAYER_DB_ID = process.env.NOTION_PRAYER_DB_ID ?? ''
+const GALLERY_DB_ID = process.env.NOTION_GALLERY_DB_ID ?? ''
+const NEWS_DB_ID = process.env.NOTION_NEWS_DB_ID ?? ''
 
 // ─── 유틸리티 ────────────────────────────────────────────
 
@@ -31,6 +31,7 @@ function richTextToString(richText: any[]): string {
 // ─── 기도제목 ─────────────────────────────────────────────
 
 export async function getPrayerRequests(): Promise<PrayerRequest[]> {
+  if (!PRAYER_DB_ID) return []
   const response = await notion.databases.query({
     database_id: PRAYER_DB_ID,
     filter: {

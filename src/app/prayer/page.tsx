@@ -3,7 +3,7 @@ import { getPrayerRequests } from '@/lib/notion'
 export const metadata = { title: '기도제목 | Pilgrim House' }
 
 export default async function PrayerPage() {
-  const prayers = await getPrayerRequests()
+  const prayers = await getPrayerRequests().catch(() => [])
 
   return (
     <div>
