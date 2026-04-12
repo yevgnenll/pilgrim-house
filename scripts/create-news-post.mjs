@@ -5,12 +5,22 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+// .env.local 로드
+const envPath = path.resolve(__dirname, '../.env')
+if (fs.existsSync(envPath)) {
+  fs.readFileSync(envPath, 'utf-8')
+    .split('\n')
+    .forEach((line) => {
+      const match = line.match(/^([^#=\s]+)\s*=\s*(.*)$/)
+      if (match) process.env[match[1]] = match[2].trim()
+    })
+}
+
 const NOTION_TOKEN = process.env.NOTION_TOKEN
 const NEWS_DB_ID = process.env.NOTION_NEWS_DB_ID
 
 if (!NOTION_TOKEN || !NEWS_DB_ID) {
-  console.error('환경변수 NOTION_TOKEN, NOTION_NEWS_DB_ID 가 필요합니다.')
-  console.error('실행 방법: NOTION_TOKEN=... NOTION_NEWS_DB_ID=... node scripts/create-news-post.mjs')
+  console.error('환경변수 NOTION_TOKEN, NOTION_NEWS_DB_ID 가 필요합니다. (.env.local 확인)')
   process.exit(1)
 }
 

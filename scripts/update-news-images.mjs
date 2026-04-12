@@ -1,9 +1,23 @@
 import { Client } from '@notionhq/client'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+// .env.local 로드
+const envPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../.env')
+if (fs.existsSync(envPath)) {
+  fs.readFileSync(envPath, 'utf-8')
+    .split('\n')
+    .forEach((line) => {
+      const match = line.match(/^([^#=\s]+)\s*=\s*(.*)$/)
+      if (match) process.env[match[1]] = match[2].trim()
+    })
+}
 
 const NOTION_TOKEN = process.env.NOTION_TOKEN
 
 if (!NOTION_TOKEN) {
-  console.error('환경변수 NOTION_TOKEN 이 필요합니다.')
+  console.error('환경변수 NOTION_TOKEN 이 필요합니다. (.env.local 확인)')
   process.exit(1)
 }
 const PAGE_ID = '340b967d-93d5-8120-9668-cbc9bc9ca9d3'
