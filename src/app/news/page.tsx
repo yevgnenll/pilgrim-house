@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { getNewsPosts } from '@/lib/notion'
 
+export const revalidate = 3600
+
 export const metadata = { title: '선교 소식 | Pilgrim House' }
 
 export default async function NewsPage() {

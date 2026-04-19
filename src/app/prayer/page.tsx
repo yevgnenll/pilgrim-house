@@ -1,6 +1,8 @@
 import { getPrayerRequests } from '@/lib/notion'
 import PrayerList from '@/components/prayer/PrayerList'
 
+export const revalidate = 3600
+
 export const metadata = { title: '기도제목 | B&W Mission Center' }
 
 export default async function PrayerPage() {

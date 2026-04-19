@@ -1,6 +1,8 @@
 import { getGalleryItems } from '@/lib/notion'
 import GalleryGrid from '@/components/gallery/GalleryGrid'
 
+export const revalidate = 3600
+
 export const metadata = { title: '사진 | Pilgrim House' }
 
 export default async function GalleryPage() {

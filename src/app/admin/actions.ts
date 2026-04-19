@@ -3,6 +3,7 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { createPrayerRequest, createGalleryItem, createNewsPost } from '@/lib/notion'
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
 async function requireAuth() {
   const supabase = createClient()
@@ -22,6 +23,8 @@ export async function submitPrayerRequest(formData: FormData) {
   if (!title || !content) throw new Error('제목과 내용을 입력해주세요.')
 
   await createPrayerRequest({ title, content, status, category })
+  revalidatePath('/prayer')
+  revalidatePath('/')
   redirect('/admin')
 }
 
@@ -50,6 +53,7 @@ export async function submitGalleryItem(formData: FormData) {
   const photoUrl = urlData.publicUrl
 
   await createGalleryItem({ title, photoUrl, description, tags })
+  revalidatePath('/gallery')
   redirect('/admin')
 }
 
@@ -65,6 +69,8 @@ export async function submitNewsPost(formData: FormData) {
   if (!title || !slug || !summary) throw new Error('제목, 슬러그, 요약을 입력해주세요.')
 
   await createNewsPost({ title, slug, summary, coverUrl, body })
+  revalidatePath('/news')
+  revalidatePath('/')
   redirect('/admin')
 }
 
