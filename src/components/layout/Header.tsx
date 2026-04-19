@@ -10,6 +10,7 @@ const navItems = [
   { href: '/gallery', label: '사진' },
   { href: '/news', label: '선교 소식' },
   { href: '/support', label: '후원 안내' },
+  { href: '/people', label: '같이하는 사람들' },
 ]
 
 export default function Header() {
