@@ -25,7 +25,6 @@ export async function submitPrayerRequest(formData: FormData) {
   await createPrayerRequest({ title, content, status, category })
   revalidatePath('/prayer')
   revalidatePath('/')
-  redirect('/admin')
 }
 
 export async function submitGalleryItem(formData: FormData) {
@@ -39,7 +38,6 @@ export async function submitGalleryItem(formData: FormData) {
 
   if (!title || !file || file.size === 0) throw new Error('제목과 이미지를 입력해주세요.')
 
-  // Supabase Storage에 업로드
   const supabase = createAdminClient()
   const ext = file.name.split('.').pop()
   const path = `gallery/${Date.now()}.${ext}`
@@ -54,7 +52,6 @@ export async function submitGalleryItem(formData: FormData) {
 
   await createGalleryItem({ title, photoUrl, description, tags })
   revalidatePath('/gallery')
-  redirect('/admin')
 }
 
 export async function submitNewsPost(formData: FormData) {
@@ -71,7 +68,6 @@ export async function submitNewsPost(formData: FormData) {
   await createNewsPost({ title, slug, summary, coverUrl, body })
   revalidatePath('/news')
   revalidatePath('/')
-  redirect('/admin')
 }
 
 export async function signOut() {

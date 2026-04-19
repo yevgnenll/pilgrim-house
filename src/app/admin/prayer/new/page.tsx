@@ -1,4 +1,8 @@
+'use client'
+
+import { useTransition, useState } from 'react'
 import { submitPrayerRequest } from '../../actions'
+import SaveDialog from '@/components/admin/SaveDialog'
 
 const CATEGORIES = [
   '',
@@ -7,11 +11,29 @@ const CATEGORIES = [
 ]
 
 export default function NewPrayerPage() {
+  const [isPending, startTransition] = useTransition()
+  const [showDialog, setShowDialog] = useState(false)
+  const [error, setError] = useState('')
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setError('')
+    const formData = new FormData(e.currentTarget)
+    startTransition(async () => {
+      try {
+        await submitPrayerRequest(formData)
+        setShowDialog(true)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : '저장 중 오류가 발생했습니다.')
+      }
+    })
+  }
+
   return (
     <div className="space-y-6">
       <h1 className="text-xl font-bold text-stone-800">기도제목 작성</h1>
 
-      <form action={submitPrayerRequest} className="bg-white rounded-xl border border-stone-200 p-6 space-y-4">
+      <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-stone-200 p-6 space-y-4">
         <div>
           <label className="block text-xs font-medium text-stone-600 mb-1">제목 *</label>
           <input
@@ -56,16 +78,21 @@ export default function NewPrayerPage() {
           </div>
         </div>
 
+        {error && <p className="text-xs text-red-600">{error}</p>}
+
         <div className="flex gap-3 pt-2">
           <button
             type="submit"
-            className="bg-amber-700 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-amber-800 transition-colors"
+            disabled={isPending}
+            className="bg-amber-700 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-amber-800 transition-colors disabled:opacity-50"
           >
-            Notion에 저장
+            {isPending ? '저장 중...' : '저장'}
           </button>
           <a href="/admin" className="text-sm text-stone-500 py-2 hover:text-stone-700">취소</a>
         </div>
       </form>
+
+      {showDialog && <SaveDialog onClose={() => setShowDialog(false)} />}
     </div>
   )
 }
