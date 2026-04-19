@@ -164,3 +164,92 @@ export async function getAllNewsSlugs(): Promise<string[]> {
   const posts = await getNewsPosts()
   return posts.map((p) => p.slug).filter(Boolean)
 }
+
+// ─── 쓰기 함수 ────────────────────────────────────────────
+
+export async function createPrayerRequest({
+  title,
+  content,
+  status = '기도중',
+  category = '',
+}: {
+  title: string
+  content: string
+  status?: '기도중' | '응답됨'
+  category?: string
+}) {
+  return notion.pages.create({
+    parent: { database_id: PRAYER_DB_ID },
+    properties: {
+      Title: { title: [{ text: { content: title } }] },
+      Content: { rich_text: [{ text: { content: content } }] },
+      Status: { select: { name: status } },
+      ...(category && { Category: { select: { name: category } } }),
+      Date: { date: { start: new Date().toISOString().slice(0, 10) } },
+      Published: { checkbox: true },
+    },
+  })
+}
+
+export async function createGalleryItem({
+  title,
+  photoUrl,
+  description = '',
+  tags = [],
+}: {
+  title: string
+  photoUrl: string
+  description?: string
+  tags?: string[]
+}) {
+  return notion.pages.create({
+    parent: { database_id: GALLERY_DB_ID },
+    properties: {
+      Title: { title: [{ text: { content: title } }] },
+      Photo: { files: [{ name: title, external: { url: photoUrl } }] },
+      ...(description && { Description: { rich_text: [{ text: { content: description } }] } }),
+      ...(tags.length && { Tag: { multi_select: tags.map((name) => ({ name })) } }),
+      Date: { date: { start: new Date().toISOString().slice(0, 10) } },
+      Published: { checkbox: true },
+    },
+  })
+}
+
+export async function createNewsPost({
+  title,
+  slug,
+  summary,
+  coverUrl = '',
+  body = '',
+}: {
+  title: string
+  slug: string
+  summary: string
+  coverUrl?: string
+  body?: string
+}) {
+  const page = await notion.pages.create({
+    parent: { database_id: NEWS_DB_ID },
+    properties: {
+      Title: { title: [{ text: { content: title } }] },
+      Slug: { rich_text: [{ text: { content: slug } }] },
+      Summary: { rich_text: [{ text: { content: summary } }] },
+      ...(coverUrl && { Cover: { files: [{ name: title, external: { url: coverUrl } }] } }),
+      Date: { date: { start: new Date().toISOString().slice(0, 10) } },
+      Published: { checkbox: true },
+    },
+  })
+
+  if (body) {
+    await notion.blocks.children.append({
+      block_id: page.id,
+      children: body.split('\n\n').filter(Boolean).map((para) => ({
+        object: 'block' as const,
+        type: 'paragraph' as const,
+        paragraph: { rich_text: [{ type: 'text' as const, text: { content: para } }] },
+      })),
+    })
+  }
+
+  return page
+}
