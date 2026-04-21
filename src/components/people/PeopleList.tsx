@@ -22,7 +22,9 @@ export default function PeopleList() {
   const [shuffled] = useState(() => shuffle(members))
 
   return (
-    <section className="grid gap-4 sm:grid-cols-2">
+    <section>
+      <h1 className="text-3xl font-bold text-stone-800 mb-4 text-center">이사진</h1>
+      <div className="grid gap-4 sm:grid-cols-2">
       {shuffled.map(({ name, title }) => (
         <div
           key={name}
@@ -32,6 +34,7 @@ export default function PeopleList() {
           <span className="text-sm text-amber-700 font-medium">{title}</span>
         </div>
       ))}
+      </div>
     </section>
   )
 }
