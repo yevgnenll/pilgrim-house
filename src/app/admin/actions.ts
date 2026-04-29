@@ -42,12 +42,12 @@ export async function submitGalleryItem(formData: FormData) {
   const ext = file.name.split('.').pop()
   const path = `gallery/${Date.now()}.${ext}`
   const { error } = await supabase.storage
-    .from('gallery')
+    .from('pilgrim-house')
     .upload(path, file, { contentType: file.type, upsert: false })
 
   if (error) throw new Error(`이미지 업로드 실패: ${error.message}`)
 
-  const { data: urlData } = supabase.storage.from('gallery').getPublicUrl(path)
+  const { data: urlData } = supabase.storage.from('pilgrim-house').getPublicUrl(path)
   const photoUrl = urlData.publicUrl
 
   await createGalleryItem({ title, photoUrl, description, tags })
