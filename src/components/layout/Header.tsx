@@ -21,9 +21,12 @@ export default function Header() {
     <header className="bg-white border-b border-stone-200 sticky top-0 z-10">
       <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* 로고 */}
-        <Link href="/" className="flex flex-col leading-tight" onClick={() => setMenuOpen(false)}>
-          <span className="font-bold text-amber-700 text-lg">B&W Mission Center</span>
-          <span className="text-xs text-stone-500">Pilgrim House · Sihanoukville</span>
+        <Link href="/" className="flex items-center gap-2.5 leading-tight" onClick={() => setMenuOpen(false)}>
+          <img src="/logo.svg" alt="" width={36} height={36} className="shrink-0" />
+          <span className="flex flex-col">
+            <span className="font-bold text-amber-700 text-lg">B&W Mission Center</span>
+            <span className="text-xs text-stone-500">Pilgrim House · Sihanoukville</span>
+          </span>
         </Link>
 
         {/* 데스크탑 네비게이션 */}
