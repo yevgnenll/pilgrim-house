@@ -1,7 +1,27 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import type { GalleryItem } from '@/lib/types'
+
+const TAG_COLORS = [
+  { idle: 'bg-rose-100 text-rose-600 hover:bg-rose-200',     active: 'bg-rose-500 text-white' },
+  { idle: 'bg-amber-100 text-amber-600 hover:bg-amber-200',   active: 'bg-amber-500 text-white' },
+  { idle: 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200', active: 'bg-emerald-500 text-white' },
+  { idle: 'bg-sky-100 text-sky-600 hover:bg-sky-200',         active: 'bg-sky-500 text-white' },
+  { idle: 'bg-violet-100 text-violet-600 hover:bg-violet-200', active: 'bg-violet-500 text-white' },
+  { idle: 'bg-orange-100 text-orange-600 hover:bg-orange-200', active: 'bg-orange-500 text-white' },
+  { idle: 'bg-teal-100 text-teal-600 hover:bg-teal-200',      active: 'bg-teal-500 text-white' },
+  { idle: 'bg-pink-100 text-pink-600 hover:bg-pink-200',      active: 'bg-pink-500 text-white' },
+]
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
 
 export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
@@ -10,7 +30,22 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
   const thumbnailStripRef = useRef<HTMLDivElement>(null)
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([])
 
-  const allTags = Array.from(new Set(items.flatMap((item) => item.tags))).sort()
+  const uniqueTags = useMemo(
+    () => Array.from(new Set(items.flatMap((item) => item.tags))),
+    [items]
+  )
+  const [allTags, setAllTags] = useState<string[]>(uniqueTags)
+
+  useEffect(() => {
+    setAllTags(shuffle(uniqueTags))
+  }, [uniqueTags])
+
+  const tagColorMap = useMemo(() => {
+    const map: Record<string, typeof TAG_COLORS[0]> = {}
+    allTags.forEach((tag, i) => { map[tag] = TAG_COLORS[i % TAG_COLORS.length] })
+    return map
+  }, [allTags])
+
   const filtered = selectedTag ? items.filter((item) => item.tags.includes(selectedTag)) : items
 
   const open = (index: number) => setLightboxIndex(index)
@@ -82,19 +117,20 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
           >
             전체
           </button>
-          {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => { setSelectedTag(tag); setLightboxIndex(null) }}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                selectedTag === tag
-                  ? 'bg-stone-800 text-white'
-                  : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
-              }`}
-            >
-              {tag}
-            </button>
-          ))}
+          {allTags.map((tag) => {
+            const color = tagColorMap[tag]
+            return (
+              <button
+                key={tag}
+                onClick={() => { setSelectedTag(tag); setLightboxIndex(null) }}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  selectedTag === tag ? color.active : color.idle
+                }`}
+              >
+                {tag}
+              </button>
+            )
+          })}
         </div>
       )}
 

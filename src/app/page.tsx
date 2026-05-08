@@ -22,9 +22,12 @@ export default async function HomePage() {
           캄보디아 시한욱빌에서 하나님의 말씀을 가르치고,<br />
           생명의 복음을 전하는 사역에 함께해 주세요.
         </p>
-        <div className="flex gap-3 justify-center pt-2">
+        <div className="flex gap-3 justify-center pt-2 flex-wrap">
           <Link href="/prayer" className="bg-amber-700 text-white px-5 py-2 rounded-full text-sm hover:bg-amber-800 transition-colors">
             기도제목 보기
+          </Link>
+          <Link href="/gallery" className="bg-stone-700 text-white px-5 py-2 rounded-full text-sm hover:bg-stone-800 transition-colors">
+            사진 보기
           </Link>
           <Link href="/support" className="border border-stone-300 text-stone-700 px-5 py-2 rounded-full text-sm hover:border-amber-700 hover:text-amber-700 transition-colors">
             후원 안내
