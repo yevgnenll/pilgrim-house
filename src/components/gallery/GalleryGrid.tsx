@@ -4,21 +4,25 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import type { GalleryItem } from '@/lib/types'
 
 export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
+  const [selectedTag, setSelectedTag] = useState<string | null>(null)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const touchStartX = useRef<number | null>(null)
   const thumbnailStripRef = useRef<HTMLDivElement>(null)
   const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([])
 
+  const allTags = Array.from(new Set(items.flatMap((item) => item.tags))).sort()
+  const filtered = selectedTag ? items.filter((item) => item.tags.includes(selectedTag)) : items
+
   const open = (index: number) => setLightboxIndex(index)
   const close = () => setLightboxIndex(null)
 
   const prev = useCallback(() => {
-    setLightboxIndex((i) => (i !== null ? (i - 1 + items.length) % items.length : null))
-  }, [items.length])
+    setLightboxIndex((i) => (i !== null ? (i - 1 + filtered.length) % filtered.length : null))
+  }, [filtered.length])
 
   const next = useCallback(() => {
-    setLightboxIndex((i) => (i !== null ? (i + 1) % items.length : null))
-  }, [items.length])
+    setLightboxIndex((i) => (i !== null ? (i + 1) % filtered.length : null))
+  }, [filtered.length])
 
   // 활성 썸네일을 가운데로 스크롤
   useEffect(() => {
@@ -61,13 +65,42 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
     touchStartX.current = null
   }
 
-  const current = lightboxIndex !== null ? items[lightboxIndex] : null
+  const current = lightboxIndex !== null ? filtered[lightboxIndex] : null
 
   return (
     <>
+      {/* 태그 필터 */}
+      {allTags.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          <button
+            onClick={() => { setSelectedTag(null); setLightboxIndex(null) }}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              selectedTag === null
+                ? 'bg-stone-800 text-white'
+                : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+            }`}
+          >
+            전체
+          </button>
+          {allTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => { setSelectedTag(tag); setLightboxIndex(null) }}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                selectedTag === tag
+                  ? 'bg-stone-800 text-white'
+                  : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* 그리드 */}
       <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-        {items.map((item, index) => (
+        {filtered.map((item, index) => (
           <div
             key={item.id}
             className="bg-white rounded-xl border border-stone-200 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
@@ -114,7 +147,7 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
         >
           {/* 상단 바 */}
           <div className="flex items-center justify-between px-4 py-3 text-white/70 text-sm flex-shrink-0">
-            <span>{lightboxIndex + 1} / {items.length}</span>
+            <span>{lightboxIndex + 1} / {filtered.length}</span>
             <button onClick={close} className="text-white text-2xl leading-none px-2">✕</button>
           </div>
 
@@ -156,7 +189,7 @@ export default function GalleryGrid({ items }: { items: GalleryItem[] }) {
               ref={thumbnailStripRef}
               className="flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-hide justify-start md:justify-center"
             >
-              {items.map((item, index) => (
+              {filtered.map((item, index) => (
                 <button
                   key={item.id}
                   ref={(el) => { thumbnailRefs.current[index] = el }}
