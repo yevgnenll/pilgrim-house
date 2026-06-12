@@ -70,6 +70,16 @@ export async function submitNewsPost(formData: FormData) {
   revalidatePath('/')
 }
 
+// Notion에서 직접 수정한 내용을 사이트에 즉시 반영 (admin 인증된 사용자만)
+export async function revalidateContent() {
+  await requireAuth()
+  revalidatePath('/')
+  revalidatePath('/prayer')
+  revalidatePath('/gallery')
+  revalidatePath('/news')
+  revalidatePath('/news/[slug]', 'page')
+}
+
 export async function signOut() {
   const supabase = createClient()
   await supabase.auth.signOut()

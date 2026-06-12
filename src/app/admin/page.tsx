@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import RevalidateButton from '@/components/admin/RevalidateButton'
 
 const sections = [
   { href: '/admin/prayer/new', label: '기도제목 작성', desc: '새 기도제목을 Notion에 등록합니다.' },
@@ -21,6 +22,14 @@ export default function AdminDashboard() {
             <p className="text-xs text-stone-500">{desc}</p>
           </Link>
         ))}
+      </div>
+
+      <div className="space-y-3">
+        <h2 className="text-sm font-semibold text-stone-700">콘텐츠 반영</h2>
+        <div className="bg-white rounded-xl border border-stone-200 p-6 flex items-center justify-between gap-4">
+          <p className="text-xs text-stone-500">Notion에서 직접 수정한 내용을 사이트에 즉시 반영합니다.</p>
+          <RevalidateButton />
+        </div>
       </div>
     </div>
   )
