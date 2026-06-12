@@ -21,10 +21,12 @@ export default function SupportPage() {
           </ul>
         </div>
 
-        {/* 카카오페이 QR */}
+        {/* 카카오페이 QR / 송금 버튼 (데스크탑 = QR, 모바일 = 버튼) */}
         <div className="bg-white border border-stone-200 rounded-xl p-6">
           <h2 className="text-lg font-semibold text-stone-800 mb-4">카카오페이 송금</h2>
-          <div className="flex flex-col items-center gap-3">
+
+          {/* 데스크탑: QR 스캔 */}
+          <div className="hidden md:flex flex-col items-center gap-3">
             <img
               src="/kakaopay-qr.png"
               alt="카카오페이 송금 QR 코드"
@@ -32,6 +34,16 @@ export default function SupportPage() {
             />
             <p className="text-sm text-stone-500">QR 코드를 스캔하여 카카오페이로 송금해 주세요.</p>
           </div>
+
+          {/* 모바일: 카카오페이 앱/페이지로 바로 이동 */}
+          <a
+            href="https://qr.kakaopay.com/281006011140632902005695"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="md:hidden block w-full bg-amber-700 text-white text-center py-3 rounded-lg text-sm font-semibold hover:bg-amber-800 transition-colors"
+          >
+            카카오페이로 송금하기
+          </a>
         </div>
 
         {/* 연락처 */}
